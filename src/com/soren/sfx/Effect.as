@@ -528,15 +528,15 @@ package com.soren.sfx {
         }
 
         if (options.hasOwnProperty('start_y')) {
-          var start_y:uint = (options['relative']) ? object.y + int(options['start_y']) : options['start_y']
-          var end_y:uint   = (options['relative']) ? object.y + int(options['end_y'])   : options['end_y']
+          var start_y:int = (options['relative']) ? object.y + int(options['start_y']) : options['start_y']
+          var end_y:int   = (options['relative']) ? object.y + int(options['end_y'])   : options['end_y']
 
           _tween.add(object, 'y', options['easing'], start_y, end_y, options['duration'])
         }
         
         if (options.hasOwnProperty('start_z')) {
-          var start_z:uint = (options['relative']) ? object.z + int(options['start_z']) : options['start_z']
-          var end_z:uint   = (options['relative']) ? object.z + int(options['end_z'])   : options['end_z']
+          var start_z:int = (options['relative']) ? object.z + int(options['start_z']) : options['start_z']
+          var end_z:int   = (options['relative']) ? object.z + int(options['end_z'])   : options['end_z']
 
           _tween.add(object, 'z', options['easing'], start_z, end_z, options['duration'])
         }

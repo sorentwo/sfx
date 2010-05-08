@@ -64,6 +64,8 @@ package com.soren.sfx {
                         begin:Number, finish:Number, duration:Number,
                         yoyo_count:uint = 0):void {
       
+      if (_stage == null) throw new Error('Stage has not been registered')
+      
       var total_frames:uint = uint(duration * _fps)
       var frame:uint = 0
       
