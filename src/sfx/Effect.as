@@ -5,7 +5,7 @@
 * @author    Parker Selbert — parker@sorentwo.com
 **/
 
-package com.soren.sfx {
+package sfx {
   
   import flash.display.DisplayObject
   import flash.display.DisplayObjectContainer

@@ -5,7 +5,7 @@
 * @author    Parker Selbert — parker@sorentwo.com
 **/
 
-package com.soren.sfx {
+package sfx {
 
   public class TweenObject {
     

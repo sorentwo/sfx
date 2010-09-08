@@ -1,4 +1,4 @@
-package com.soren.sfx.easing {
+package sfx.easing {
   
   public class Back {
     

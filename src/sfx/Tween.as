@@ -6,7 +6,7 @@
 * @author    Parker Selbert — parker@sorentwo.com
 **/
 
-package com.soren.sfx {
+package sfx {
   
   import flash.display.Stage
   import flash.events.Event
