@@ -1,0 +1,48 @@
+require 'rubygems'
+
+################################################################################
+# Options
+################################################################################
+
+OPT = {}
+OPT[:project]   = 'sfx'
+OPT[:version]   = '0.5.0'
+OPT[:src_dir]   = 'src'
+OPT[:bin_dir]   = 'bin'
+OPT[:lib_dir]   = 'lib'
+OPT[:libraries] = %W(/opt/aslib/asunit).join(' ')
+
+OPT[:test_dir]    = 'test'
+OPT[:test_suite]  = 'AllTests.as'
+OPT[:test_runner] = 'SfxRunner.as'
+OPT[:runner_path] = File.join(OPT[:test_dir], OPT[:test_runner])
+
+################################################################################
+# Testing Tasks
+################################################################################
+
+namespace :test do
+  desc 'Compile and run unit tests'
+  task :units do
+    cmd  = []
+    cmd << "mxmlc -use-network=false -debug=true"
+    cmd << "-compiler.source-path=#{OPT[:src_dir]},#{OPT[:libraries]}"
+    cmd << "#{OPT[:runner_path]}"
+    
+    sh cmd.join(' ')
+    sh %{ fdb #{OPT[:runner_path].gsub('as', 'swf')} }
+  end
+end
+
+################################################################################
+# Build Tasks
+################################################################################
+
+desc 'Compile into a component library'
+task :compile do
+  cmd  = "compc -source-path #{OPT[:src_dir]} "
+  cmd << "-include-sources #{OPT[:src_dir]}/com/soren/sfx/ "
+  cmd << "-output='#{OPT[:bin_dir]}/#{OPT[:project]}-#{OPT[:version]}.swc'"
+  
+  sh cmd
+end
