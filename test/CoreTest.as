@@ -16,7 +16,13 @@ package {
     
     public function testWrappingAnObject():void {
       var object:Object = new Object()
-      assertTrue("Wrapped object is sfx", Sfx.wrap(object) is Sfx)
+      assertTrue("Wrapping returns itself", Sfx.wrap(object) is Sfx)
+    }
+    
+    public function testRetrievingWrappedObject():void {
+      var object:Object = {}
+      var wrapped:Sfx = Sfx.wrap(object)
+      assertSame(object, wrapped.object)
     }
   }
 }
