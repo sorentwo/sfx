@@ -21,17 +21,15 @@ OPT[:runner_path] = File.join(OPT[:test_dir], OPT[:test_runner])
 # Testing Tasks
 ################################################################################
 
-namespace :test do
-  desc 'Compile and run unit tests'
-  task :units do
-    cmd  = []
-    cmd << "mxmlc -use-network=false -debug=true"
-    cmd << "-compiler.source-path=#{OPT[:src_dir]},#{OPT[:libraries]}"
-    cmd << "#{OPT[:runner_path]}"
-    
-    sh cmd.join(' ')
-    sh %{ fdb #{OPT[:runner_path].gsub('as', 'swf')} }
-  end
+desc 'Compile and run unit tests'
+task :test do
+  cmd  = []
+  cmd << "mxmlc -use-network=false -debug=true"
+  cmd << "-compiler.source-path=#{OPT[:src_dir]},#{OPT[:libraries]}"
+  cmd << "#{OPT[:runner_path]}"
+  
+  sh cmd.join(' ')
+  sh %{ fdb #{OPT[:runner_path].gsub('as', 'swf')} }
 end
 
 ################################################################################
