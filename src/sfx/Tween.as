@@ -10,8 +10,6 @@ package sfx {
   
   import flash.display.Stage
   import flash.events.Event
-  import flash.filters.BlurFilter
-  import flash.filters.GlowFilter
   import flash.utils.Dictionary
   
   public class Tween {
@@ -55,7 +53,7 @@ package sfx {
     * 
     * @param  target    The object that will be affected
     * @param  property  Which property will be affected on the object, i.e. 'x'
-    * @param  easing    One of the easing functions from the easing package
+    * @param  easing    One of the easing functions from the easing class
     * @param  begin     The value at which tweening will start
     * @param  finish    The value at which tweening will finish
     * @param  duration  The length of time, in seconds, that the animation will take
@@ -179,20 +177,6 @@ package sfx {
 
       // if (tween_object.filtering) renderFilter(tween_object)
     }
-    
-    /**
-    * Render the property as a filter, not a standard property.
-    **/
-    /*private function renderFilter(tween_object:TweenObject):void {
-      var node:Node = tween_object.target
-      
-      switch (tween_object.property) {
-        case 'blur_x': 
-        case 'blur_y':      node.filters = [new BlurFilter(node.blur_x, node.blur_y, 2)]; break
-        case 'glow_alpha':
-        case 'glow_blur':   node.filters = [new GlowFilter(node.glow_color, node.glow_alpha, node.glow_blur, node.glow_blur, 2, 2, false, false)]; break
-      }
-    }*/
     
     /**
     * Dual purpose, fast-forward or rewind.
