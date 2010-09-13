@@ -1,17 +1,17 @@
 package sfx {
-  public class Sfx {
+  public class SFX {
     
     private var _object:*;
     
-    public function Sfx(object:* = null) {
+    public function SFX(object:* = null) {
       _object = object;
     }
     
     /**
      * Wrap an object in an Sfx object. Think jQuery's '$()
     **/
-    public static function wrap(object:* = null):Sfx {
-      return new Sfx(object);
+    public static function wrap(object:* = null):SFX {
+      return new SFX(object);
     }
     
     /**

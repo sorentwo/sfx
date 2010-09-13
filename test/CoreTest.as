@@ -1,6 +1,6 @@
 package {
   import asunit.framework.TestCase
-  import sfx.Sfx
+  import sfx.SFX
   
   public class CoreTest extends TestCase {
     public function CoreTest(testMethod:String) {
@@ -11,17 +11,17 @@ package {
     protected override function tearDown():void { }
     
     public function testInstantiatingWithoutAnObject():void {
-      assertTrue("Instantiates fine without object", new Sfx() is Sfx)
+      assertTrue("Instantiates fine without object", new SFX() is SFX)
     }
     
     public function testWrappingAnObject():void {
       var object:Object = new Object()
-      assertTrue("Wrapping returns itself", Sfx.wrap(object) is Sfx)
+      assertTrue("Wrapping returns itself", SFX.wrap(object) is SFX)
     }
     
     public function testRetrievingWrappedObject():void {
       var object:Object = {}
-      var wrapped:Sfx = Sfx.wrap(object)
+      var wrapped:SFX = SFX.wrap(object)
       assertSame(object, wrapped.object)
     }
   }
