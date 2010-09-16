@@ -5,7 +5,7 @@ package {
   
   public class AllTests extends TestSuite {
     public function AllTests() {
-      var tests:Array = [CoreTest]
+      var tests:Array = [CoreTest, AnimationTest]
 
       iterateTestArray(tests)
     }
