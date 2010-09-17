@@ -3,6 +3,7 @@ package sfx {
   public class Easing {
     
     private static const BACK_SEED:Number = 1.70158
+    private static const HALF_PI:Number = Math.PI / 2
     
     /**
     * Static container only.
@@ -36,12 +37,12 @@ package sfx {
 		}
 		
 		public static function bounceIn(t:Number, b:Number, c:Number, d:Number):Number {
-			return c - easeOut(d - t, 0, c, d) + b
+			return c - Easing.bounceOut(d - t, 0, c, d) + b
 		}
 		
 		public static function bounceInOut(t:Number, b:Number, c:Number, d:Number):Number {
-			if (t < d / 2) return easeIn(t * 2, 0, c, d) * .5 + b
-			else           return easeOut(t * 2 - d, 0, c, d) * .5 + c * .5 + b
+			if (t < d / 2) return Easing.bounceIn(t * 2, 0, c, d) * .5 + b
+			else           return Easing.bounceOut(t * 2 - d, 0, c, d) * .5 + c * .5 + b
 		}
 		
 		// Cubic
