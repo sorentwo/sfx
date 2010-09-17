@@ -1,9 +1,7 @@
 /**
-* Lightweight version of a tween engine. Makes use of Robert Penners easing
-* algorithms.
-*
-* @copyright Copyright (c) 2009 Soren LLC
-* @author    Parker Selbert — parker@sorentwo.com
+* Tweening engine that is a singleton and locked to the global stage enter_frame
+* event. The goal is to be as lightweight and quick as possible while providing
+* a recognized feature-set.
 **/
 
 package sfx {
@@ -19,9 +17,7 @@ package sfx {
     private static var _tween:Tween      = new Tween()
     private static var _list:Array       = new Array()
     private static var _cache:Dictionary = new Dictionary(false)
-    
-    private static var _stage:Stage
-    private static var _fps:Number
+    private static var _stage:Stage      = null
     
     /**
     * Tween is a singleton, for performance reasons, and cannot be constructed.
@@ -42,9 +38,9 @@ package sfx {
     * events. Without registering the stage the Tween class will not work.
     **/
     public function registerStage(stage:Stage):void {
-      _stage = stage
-      _fps   = _stage.frameRate
+      if (_stage != null) _stage.removeEventListener(Event.ENTER_FRAME, update)
       
+      _stage = stage
       _stage.addEventListener(Event.ENTER_FRAME, update)
     }
     
@@ -64,7 +60,7 @@ package sfx {
       
       if (_stage == null) throw new Error('Stage has not been registered')
       
-      var total_frames:uint = uint(duration * _fps)
+      var total_frames:uint = uint(duration * _stage.frameRate)
       var frame:uint = 0
       
       // Ensure that there is only one tween active at a time per-target-property
