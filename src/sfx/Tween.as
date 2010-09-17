@@ -8,8 +8,12 @@ package sfx {
   
   import flash.display.Stage
   import flash.events.Event
+  import flash.events.EventDispatcher
   
-  public class Tween {    
+  public class Tween extends EventDispatcher {
+    
+    public static var ANIMATION_COMPLETE:String = 'ANIMATION COMPLETE'
+    
     private static var _tween:Tween = new Tween()
     private static var _stage:Stage = null
     private static var _list:Vector.<TweenObject> = new Vector.<TweenObject>()
@@ -44,12 +48,12 @@ package sfx {
     * 
     * @param  target    The object that will be affected
     * @param  property  Which property will be affected on the object, i.e. 'x'
-    * @param  easing    One of the easing functions from the easing class
+    * @param  easing    A string representation of an easing function
     * @param  begin     The value at which tweening will start
     * @param  finish    The value at which tweening will finish
     * @param  duration  The animation duration in milliseconds
     **/
-    public function add(target:Object, property:String, easing:Function,
+    public function add(target:Object, property:String, easing:String,
                         begin:Number, finish:Number, duration:Number,
                         yoyo_count:uint = 0):void {
       
@@ -61,7 +65,7 @@ package sfx {
       var existing_tween:TweenObject = findByTargetAndProperty(target, property)
       if (existing_tween) remove(existing_tween)
 
-      _list.push(new TweenObject(target, property, easing, begin, finish, total_frames, 0, yoyo_count))
+      _list.push(new TweenObject(target, property, Easing.resolveEasing(easing), begin, finish, total_frames, 0, yoyo_count))
     }
     
     /**
@@ -138,6 +142,7 @@ package sfx {
           if (tween_object.yoyo_count > 0) {
             yoyo(tween_object)
           } else {
+            dispatchEvent(new Event(Tween.ANIMATION_COMPLETE))
             remove(tween_object)
           }
         }

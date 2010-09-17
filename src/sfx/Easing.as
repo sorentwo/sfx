@@ -12,6 +12,45 @@ package sfx {
       throw new Error('Easing class is a static container only')
     }
     
+    public static function resolveEasing(name:String):Function {
+      var easing:Function
+      switch (name) {
+        case 'backIn':            easing = Easing.backIn;          break
+        case 'backOut':           easing = Easing.backOut;         break
+        case 'backInOut':         easing = Easing.backInOut;       break
+        case 'bounceIn':          easing = Easing.bounceIn;        break
+        case 'bounceOut':         easing = Easing.bounceOut;       break
+        case 'bounceInOut':       easing = Easing.backInOut;       break
+        case 'cubicIn':           easing = Easing.cubicIn;         break
+        case 'cubicOut':          easing = Easing.cubicOut;        break
+        case 'cubicInOut':        easing = Easing.backInOut;       break
+        case 'exponentialIn':     easing = Easing.exponentialIn;   break
+        case 'exponentialOut':    easing = Easing.exponentialOut;  break
+        case 'exponentialInOut':  easing = Easing.backInOut;       break
+        case 'linearIn':          easing = Easing.linearIn;        break
+        case 'linearOut':         easing = Easing.linearOut;       break
+        case 'linearInOut':       easing = Easing.backInOut;       break
+        case 'quadIn':            easing = Easing.quadIn;          break
+        case 'quadOut':           easing = Easing.quadOut;         break
+        case 'quadInOut':         easing = Easing.backInOut;       break
+        case 'quartIn':           easing = Easing.quartIn;         break
+        case 'quartOut':          easing = Easing.quartOut;        break
+        case 'quartInOut':        easing = Easing.backInOut;       break
+        case 'quintIn':           easing = Easing.quintIn;         break
+        case 'quintOut':          easing = Easing.quintOut;        break
+        case 'quintInOut':        easing = Easing.backInOut;       break
+        case 'sineIn':            easing = Easing.sineIn;          break
+        case 'sineOut':           easing = Easing.sineOut;         break
+        case 'sineInOut':         easing = Easing.backInOut;       break
+        case 'strongIn':          easing = Easing.strongIn;        break
+        case 'strongOut':         easing = Easing.strongOut;       break
+        case 'strongInOut':       easing = Easing.backInOut;       break
+        default:                  easing = Easing.linearIn
+      }
+      
+      return easing
+    }
+    
     // Back
     
     public static function backIn (t:Number, b:Number, c:Number, d:Number, s:Number = BACK_SEED):Number {

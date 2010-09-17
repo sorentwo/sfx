@@ -23,7 +23,7 @@ package {
     }
     
     public function testThisIsABlackBoxAndReallyHardToTest():void {
-      _tween.add(_object, 'x', Easing.linearIn, 0, 10, 1)
+      _tween.add(_object, 'x', 'linearIn', 0, 10, 1)
       assertEquals(10, _object.x)
     }
   }
