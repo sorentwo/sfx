@@ -3,7 +3,8 @@ package sfx {
   public class Easing {
     
     private static const BACK_SEED:Number = 1.70158
-    private static const HALF_PI:Number = Math.PI / 2
+    private static const PI:Number        = Math.PI
+    private static const HALF_PI:Number   = Math.PI / 2
     
     /**
     * Static container only.
@@ -187,7 +188,7 @@ package sfx {
 		}
 		
 		public static function sineInOut(t:Number, b:Number, c:Number, d:Number):Number {
-			return -c / 2 * (Math.cos(Math.PI * t / d) - 1) + b
+			return -c / 2 * (Math.cos(PI * t / d) - 1) + b
 		}
 		
 		// Strong
