@@ -12,11 +12,9 @@ package sfx {
   
   public class Tween extends EventDispatcher {
     
-    public static var ANIMATION_COMPLETE:String = 'ANIMATION COMPLETE'
-    
     private static var _tween:Tween = new Tween()
-    private static var _stage:Stage = null
-    private static var _list:Vector.<TweenObject> = new Vector.<TweenObject>()
+    protected static var _stage:Stage = null
+    protected static var _list:Vector.<TweenObject> = new Vector.<TweenObject>()
     
     /**
     * Tween is a singleton, for performance reasons, and cannot be constructed.
@@ -54,18 +52,14 @@ package sfx {
     * @param  duration  The animation duration in milliseconds
     **/
     public function add(target:Object, property:String, easing:String,
-                        begin:Number, finish:Number, duration:Number,
+                        begin:Number, finish:Number, duration:uint,
                         yoyo_count:uint = 0):void {
       
-      if (_stage == null) throw new Error('Stage has not been registered')
-      
-      var total_frames:uint = uint((duration / 1000) * _stage.frameRate)
-      
-      // Ensure that there is only one tween active at a time per-target-property
-      var existing_tween:TweenObject = findByTargetAndProperty(target, property)
-      if (existing_tween) remove(existing_tween)
+      var frames:uint       = uint((duration / 1000) * _stage.frameRate),
+          easef:Function    = Easing.resolveEasing(easing),
+          tween:TweenObject = new TweenObject(target, property, easef, begin, finish, frames, yoyo_count)
 
-      _list.push(new TweenObject(target, property, Easing.resolveEasing(easing), begin, finish, total_frames, 0, yoyo_count))
+      _list.push(tween)
     }
     
     /**
@@ -125,25 +119,25 @@ package sfx {
       while (stopping.length > 0) { remove(stopping.shift()) }
     }
     
-    // PRIVATE -----------------------------------------------------------------
+    // PROTECTED ---------------------------------------------------------------
     
     /**
     * Checks the list and triggers rendering or removes completed tweens.
     **/
-    private function update(event:Event):void {
+    protected function update(event:Event):void {
       if (_list.length < 1) return
       
-      for each (var tween_object:TweenObject in _list) {
-        if (!tween_object.paused) render(tween_object)
-
-        if ((!tween_object.yoyoing && tween_object.frame == tween_object.total_frames) ||
-            (tween_object.yoyoing  && tween_object.frame == 0)) {
-          
-          if (tween_object.yoyo_count > 0) {
-            yoyo(tween_object)
+      for (var i:int = 0; i < _list.length; i++) {
+        var to:TweenObject = _list[i]
+        
+        if (!to.paused) render(to)
+        
+        if ((!to.yoyoing && to.frame == to.total_frames) || (to.yoyoing && to.frame == 0)) {
+          if (to.yoyo_count > 0) {
+            yoyo(to)
           } else {
-            dispatchEvent(new Event(Tween.ANIMATION_COMPLETE))
-            remove(tween_object)
+            dispatchEvent(new TweenEvent(TweenEvent.COMPLETE, to))
+            remove(to)
           }
         }
       }
@@ -152,7 +146,7 @@ package sfx {
     /**
     * Updates the target object
     **/
-    private function render(tween_object:TweenObject):void {
+    protected function render(tween_object:TweenObject):void {
       tween_object.frame = (tween_object.yoyoing) ? tween_object.frame - 1 : tween_object.frame + 1
 
       var time:uint     = tween_object.frame
@@ -168,7 +162,7 @@ package sfx {
     /**
     * Dual purpose, fast-forward or rewind.
     **/
-    private function jump(target:Object, property:String, forward:Boolean):void {
+    protected function jump(target:Object, property:String, forward:Boolean):void {
       var tween_object:TweenObject = findByTargetAndProperty(target, property)
       
       tween_object.target[tween_object.property] = (forward) ? tween_object.finish : tween_object.begin
@@ -181,7 +175,7 @@ package sfx {
     * Instructs the tweened animation to play in reverse from its last direction
     * of tweened property increments.
     **/
-    private function yoyo(tween_object:TweenObject):void {
+    protected function yoyo(tween_object:TweenObject):void {
       tween_object.yoyoing     = (tween_object.yoyoing) ? false : true
       tween_object.yoyo_count -= 1
     }
@@ -189,7 +183,7 @@ package sfx {
     /**
     * Dual purpose, pause or unpause.
     **/
-    private function togglePause(target:Object = null, toggle:Boolean = true):void {
+    protected function togglePause(target:Object = null, toggle:Boolean = true):void {
       var pausing:Vector.<TweenObject> = (target) ? findAllByTarget(target) : _list
       
       while (pausing.length > 0) { pausing.shift().paused = toggle }
@@ -198,14 +192,14 @@ package sfx {
     /**
     * Remove an object from the list.
     **/
-    private function remove(item:TweenObject):void {
+    protected function remove(item:TweenObject):void {
       _list.splice(_list.indexOf(item), 1)
     }
     
     /**
     * Given the target object find all tween objects.
     **/
-    private function findAllByTarget(target:Object):Vector.<TweenObject> {
+    protected function findAllByTarget(target:Object):Vector.<TweenObject> {
       var filter:Function = function(item:TweenObject, index:int, vector:Vector.<TweenObject>):Boolean {
         return item.target == target
       }
@@ -216,9 +210,10 @@ package sfx {
     /**
     * Given the target and the property find a particular tween object.
     **/
-    private function findByTargetAndProperty(target:Object, property:String):TweenObject {
-      for each (var tween_object:TweenObject in _list) {
-        if (tween_object.target == target && tween_object.property == property) return tween_object
+    protected function findByTargetAndProperty(target:Object, property:String):TweenObject {
+      for (var i:int = 0; i < _list.length; i++) {
+        var to:TweenObject = _list[i]
+        if (to.target == target && to.property == property) return to
       }
       
       return null

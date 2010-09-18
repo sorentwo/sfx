@@ -19,15 +19,16 @@ package sfx {
     
     public function TweenObject(target:Object, property:String, easing:Function,
                                 begin:Number, finish:Number, total_frames:uint,
-                                frame:uint, yoyo_count:uint) {
+                                yoyo_count:uint) {
       this.target       = target
       this.property     = property
       this.easing       = easing
       this.begin        = begin
       this.finish       = finish
       this.total_frames = total_frames
-      this.frame        = frame
       this.yoyo_count   = yoyo_count
+      
+      this.frame = 0
     }
   }
 }

@@ -1,6 +1,6 @@
 package sfx {
   
-  import sfx.Easing
+  import flash.events.Event
   
   public class SFX {
     
@@ -8,6 +8,7 @@ package sfx {
     
     private var _object:*    = null
     private var _queue:Array = []
+    private var _tween:Tween = Tween.getInstance()
     
     public function SFX(object:* = null) {
       _object = object;
@@ -38,11 +39,7 @@ package sfx {
     public function animate(properties:Object, duration:uint = 0,
                             easing:String = null, callback:Function = null):SFX {
       
-      _queue.push({ properties: properties,
-                    duration:   duration,
-                    easing:     easing,
-                    callback:   callback,
-                    complete:   false })
+      _queue.push(new QueueObject(properties, duration, easing, callback))
       
       processQueue()
       
@@ -54,46 +51,62 @@ package sfx {
     * fast-forward, but extremely useful for testing.
     **/
     public function complete():SFX {
-      while (_queue.length > 0) {
-        applyEnqueuedAnimation(_queue.shift())
-      }
+      while (_queue.length > 0) { applyAnimation(_queue.shift()) }
       
       return this
     }
     
-    // PRIVATE -----------------------------------------------------------------
+    // PROTECTED ---------------------------------------------------------------
     
-    private function processQueue():void {
-      if (_queue.length == 0) return
-      
-      // This is wrong. I know.
-      while (_queue.length > 0) {
-        applyEnqueuedAnimation(_queue.shift())
-      }
+    /**
+    * FIFO the queue down by one.
+    **/
+    protected function processQueue():void {
+      if (_queue.length > 0) applyAnimation(_queue.shift())
     }
     
-    private function applyEnqueuedAnimation(animation:Object):void {
+    /**
+    * Resolve a QueueObject's properties into values we can use and start tweening it.
+    **/
+    protected function applyAnimation(animation:QueueObject):void {
       var properties:Object = animation.properties,
-          duration:uint     = animation.uint,
+          duration:uint     = animation.duration,
           easing:String     = animation.easing,
           callback:Function = animation.callback
       
-      for (var attr:String in properties) {
-        var prop:String  = properties[attr],
-            parts:Object = RFXNUM.exec(prop),
-            value:Number = Number(prop)
+      for (var prop:String in properties) {
+        var value:String   = properties[prop],
+            parts:Object   = RFXNUM.exec(value),
+            nvalue:Number  = Number(value),
+            current:Number = Number(this.object[prop]),
+            target:Number
         
         // If a +=/-= token was provided we're doing a relative animation
         if (parts[1]) {
-          var current:Number = Number(this.object[attr]),
-              target:Number  = Number(parts[2])
-          
-          value = (parts[1] == "-=") ? current - target : current + target
-          trace("Current: " + current + ", Target: " + target + ", Value: " + value)
+          target = Number(parts[2])
+          nvalue = (parts[1] == "-=") ? current - target : current + target
         }
-
-        this.object[attr] = value
+        
+        _tween.add(_object, prop, easing, current, nvalue, duration)
+        _tween.addEventListener(TweenEvent.COMPLETE, animationCompleteHandler)
       }
+    }
+    
+    /**
+    * When an animation is complete it will trigger this handler.
+    **/
+    protected function animationCompleteHandler(event:Event):void {
+      performCallback()
+      processQueue()
+    }
+    
+    /**
+    * Trigger the callback for the current animation
+    **/
+    protected function performCallback():void {
+      /*var object:TweenObject = _queue[0]*/
+      
+      /*if (object.callback) object.callback()*/
     }
   }
 }
