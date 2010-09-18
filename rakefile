@@ -44,6 +44,7 @@ task :performance do
   cmd << "example/Particles.as"
   
   sh cmd.join(' ')
+  sh %{ open example/Particles.swf }
 end
 
 ################################################################################
@@ -52,9 +53,10 @@ end
 
 desc 'Compile into a component library'
 task :compile do
-  cmd  = "compc -source-path #{OPT[:src_dir]} "
-  cmd << "-include-sources #{OPT[:src_dir]}/sfx/ "
+  cmd = []
+  cmd << "compc -source-path #{OPT[:src_dir]}"
+  cmd << "-include-sources #{OPT[:src_dir]}/sfx/"
   cmd << "-output='#{OPT[:bin_dir]}/#{OPT[:project]}-#{OPT[:version]}.swc'"
   
-  sh cmd
+  sh cmd.join(' ')
 end
