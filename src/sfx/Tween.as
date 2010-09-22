@@ -126,7 +126,8 @@ package sfx {
     protected function update(event:Event):void {
       if (_list.length < 1) return
       
-      for (var i:int = 0; i < _list.length; i++) {
+      var length:int = _list.length
+      for (var i:int = 0; i < length; i++) {
         var to:TweenObject = _list[i]
         
         if (!to.paused) to.render()
@@ -179,7 +180,8 @@ package sfx {
     * Given the target and the property find a particular tween object.
     **/
     protected function findByTargetAndProperty(target:Object, property:String):TweenObject {      
-      for (var i:int = 0; i < _list.length; i++) {
+      var length:int = _list.length
+      for (var i:int = 0; i < length; i++) {
         var to:TweenObject = _list[i]
         if (to.target == target && to.property == property) return to
       }
