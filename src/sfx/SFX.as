@@ -1,7 +1,5 @@
 package sfx {
   
-  import flash.events.Event
-  
   public class SFX {
     
     public const RFXNUM:RegExp = /^([+\-]=)?([\d+.\-]+)$/
@@ -11,20 +9,20 @@ package sfx {
     private var _tween:Tween = Tween.getInstance()
     
     public function SFX(object:* = null) {
-      _object = object;
+      _object = object
     }
     
     /**
-    * Wrap an object in an Sfx object. Think jQuery's '$()
+    * Wrap an object in an Sfx object. Think jQuery's $()
     **/
     public static function wrap(object:* = null):SFX {
-      return new SFX(object);
+      return new SFX(object)
     }
     
     /**
     * Returns the originally wrapped object.
     **/
-    public function get object():* { return _object; }
+    public function get object():* { return _object }
     
     /**
     * Animate the wrapped object's properties.
@@ -88,7 +86,6 @@ package sfx {
         }
         
         _tween.add(_object, prop, easing, current, nvalue, duration)
-        _tween.addEventListener(TweenEvent.COMPLETE, animationCompleteHandler)
       }
     }
     

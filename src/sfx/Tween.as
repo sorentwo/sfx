@@ -8,9 +8,8 @@ package sfx {
   
   import flash.display.Stage
   import flash.events.Event
-  import flash.events.EventDispatcher
   
-  public class Tween extends EventDispatcher {
+  public class Tween {
     
     private static var _tween:Tween = new Tween()
     protected static var _stage:Stage = null
@@ -130,13 +129,12 @@ package sfx {
       for (var i:int = 0; i < _list.length; i++) {
         var to:TweenObject = _list[i]
         
-        if (!to.paused) render(to)
+        if (!to.paused) to.render()
         
         if ((!to.yoyoing && to.frame == to.total_frames) || (to.yoyoing && to.frame == 0)) {
           if (to.yoyo_count > 0) {
-            yoyo(to)
+            to.yoyo()
           } else {
-            dispatchEvent(new TweenEvent(TweenEvent.COMPLETE, to))
             remove(to)
           }
         }
@@ -144,40 +142,10 @@ package sfx {
     }
     
     /**
-    * Updates the target object
-    **/
-    protected function render(tween_object:TweenObject):void {
-      tween_object.frame = (tween_object.yoyoing) ? tween_object.frame - 1 : tween_object.frame + 1
-
-      var time:uint     = tween_object.frame
-      var begin:Number  = tween_object.begin
-      var finish:Number = tween_object.finish
-      var total:uint    = tween_object.total_frames
-      var change:Number = finish - begin
-      var ease:Number   = tween_object.easing.call(null, time, begin, change, total)
-
-      tween_object.target[tween_object.property] = ease
-    }
-    
-    /**
     * Dual purpose, fast-forward or rewind.
     **/
     protected function jump(target:Object, property:String, forward:Boolean):void {
-      var tween_object:TweenObject = findByTargetAndProperty(target, property)
-      
-      tween_object.target[tween_object.property] = (forward) ? tween_object.finish : tween_object.begin
-      tween_object.frame = tween_object.total_frames
-      
-      remove(tween_object)
-    }
-
-    /**
-    * Instructs the tweened animation to play in reverse from its last direction
-    * of tweened property increments.
-    **/
-    protected function yoyo(tween_object:TweenObject):void {
-      tween_object.yoyoing     = (tween_object.yoyoing) ? false : true
-      tween_object.yoyo_count -= 1
+      findByTargetAndProperty(target, property).jump(forward)
     }
     
     /**
@@ -210,7 +178,7 @@ package sfx {
     /**
     * Given the target and the property find a particular tween object.
     **/
-    protected function findByTargetAndProperty(target:Object, property:String):TweenObject {
+    protected function findByTargetAndProperty(target:Object, property:String):TweenObject {      
       for (var i:int = 0; i < _list.length; i++) {
         var to:TweenObject = _list[i]
         if (to.target == target && to.property == property) return to
