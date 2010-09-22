@@ -10,10 +10,6 @@ package {
     protected override function setUp():void { }
     protected override function tearDown():void { }
     
-    public function testInstantiatingWithoutAnObject():void {
-      assertTrue("Instantiates fine without object", new SFX() is SFX)
-    }
-    
     public function testWrappingAnObject():void {
       var object:Object = new Object()
       assertTrue("Wrapping returns itself", SFX.wrap(object) is SFX)
