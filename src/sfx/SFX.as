@@ -92,10 +92,10 @@ package sfx {
     /**
     * When an animation is complete it will trigger this handler.
     **/
-    protected function animationCompleteHandler(event:Event):void {
+    /*protected function animationCompleteHandler(event:Event):void {
       performCallback()
       processQueue()
-    }
+    }*/
     
     /**
     * Trigger the callback for the current animation
