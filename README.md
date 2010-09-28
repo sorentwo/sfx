@@ -1,10 +1,10 @@
-          ___          
-        /'___\         
-   ____/\ \__/  __  _  
-  /',__\ \ ,__\/\ \/'\ 
- /\__, `\ \ \_/\/>  </ 
- \/\____/\ \_\  /\_/\_\
-  \/___/  \/_/  \//\/_/
+              ___          
+            /'___\         
+       ____/\ \__/  __  _  
+      /',__\ \ ,__\/\ \/'\ 
+     /\__, `\ \ \_/\/>  </ 
+     \/\____/\ \_\  /\_/\_\
+      \/___/  \/_/  \//\/_/
 
 An AS3 animation library with pre-defined effects, queues and tweening. It 
 is optimized for speed and handles anti-garbage collection automatically.
