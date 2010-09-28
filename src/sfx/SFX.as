@@ -34,76 +34,26 @@ package sfx {
     * 
     * @example There will be examples here
     **/
-    public function animate(properties:Object, duration:uint = 0,
-                            easing:String = null, callback:Function = null):SFX {
+    public function animate(properties:Object, duration:uint = 0, easing:String = null, callback:Function = null):SFX {
       
       _queue.push(new QueueObject(properties, duration, easing, callback))
       
-      processQueue()
+      /*processQueue()*/
       
       return this
     }
-    
+        
     /**
-    * Complete every animation in the queue in sequence. This is essentially a
-    * fast-forward, but extremely useful for testing.
+    * Show the queue of animations to be executed on the wrapped object
     **/
-    public function complete():SFX {
-      while (_queue.length > 0) { applyAnimation(_queue.shift()) }
+    public function queue(callback:Function = null):Array {
+      if (callback != null) {
+        _queue.push(callback)
+      }
       
-      return this
+      return _queue
     }
     
     // PROTECTED ---------------------------------------------------------------
-    
-    /**
-    * FIFO the queue down by one.
-    **/
-    protected function processQueue():void {
-      if (_queue.length > 0) applyAnimation(_queue.shift())
-    }
-    
-    /**
-    * Resolve a QueueObject's properties into values we can use and start tweening it.
-    **/
-    protected function applyAnimation(animation:QueueObject):void {
-      var properties:Object = animation.properties,
-          duration:uint     = animation.duration,
-          easing:String     = animation.easing,
-          callback:Function = animation.callback
-      
-      for (var prop:String in properties) {
-        var value:String   = properties[prop],
-            parts:Object   = RFXNUM.exec(value),
-            nvalue:Number  = Number(value),
-            current:Number = Number(this.object[prop]),
-            target:Number
-        
-        // If a +=/-= token was provided we're doing a relative animation
-        if (parts[1]) {
-          target = Number(parts[2])
-          nvalue = (parts[1] == "-=") ? current - target : current + target
-        }
-        
-        _tween.add(_object, prop, easing, current, nvalue, duration)
-      }
-    }
-    
-    /**
-    * When an animation is complete it will trigger this handler.
-    **/
-    /*protected function animationCompleteHandler(event:Event):void {
-      performCallback()
-      processQueue()
-    }*/
-    
-    /**
-    * Trigger the callback for the current animation
-    **/
-    protected function performCallback():void {
-      /*var object:TweenObject = _queue[0]*/
-      
-      /*if (object.callback) object.callback()*/
-    }
   }
 }
