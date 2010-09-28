@@ -39,7 +39,7 @@ package sfx {
     **/
     public function animate(properties:Object, duration:uint = 0, easing:String = null, callback:Function = null):SFX {
       
-      var callbacks:Array = (callback is Function) ? [callback, dequeue] : [dequeue]
+      var callbacks:Array = (callback is Function) ? [callback, this.dequeue] : [this.dequeue]
       
       _queue.push(function():void {
         _tween.add(_object, properties, duration, easing, callbacks)
