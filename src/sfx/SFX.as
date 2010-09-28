@@ -46,12 +46,27 @@ package sfx {
     /**
     * Show the queue of animations to be executed on the wrapped object
     **/
-    public function queue(callback:Function = null):Array {
+    public function queue(callback:Function = null):* {
       if (callback != null) {
         _queue.push(callback)
+        return this
       }
       
       return _queue
+    }
+    
+    /**
+    * Execute the next function on the queue for the matched elements.
+    **/
+    public function dequeue():void {
+      if (_queue.length > 0) _queue.shift()()
+    }
+    
+    /**
+    * Remove from the queue all items that have not yet been run
+    **/
+    public function clearQueue():void {
+      _queue.splice(0, _queue.length)
     }
     
     // PROTECTED ---------------------------------------------------------------

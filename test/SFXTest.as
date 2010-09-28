@@ -12,7 +12,7 @@ package {
     }
     
     protected override function setUp():void {
-      _object  = new Object()
+      _object  = { x: 0, y: 0 }
       _wrapper = SFX.wrap(_object)
     }
     
@@ -32,9 +32,44 @@ package {
       assertEquals(0, _wrapper.queue().length)
     }
     
-    public function testWrappedQueueAcceptsFunction():void {
-      _wrapper.queue(function():void {})
+    public function testQueueDoesntExecuteImmediately():void {
+      _wrapper.queue(function():void { _object.x = 10 })
+      assertEquals(0, _object.x)
       assertEquals(1, _wrapper.queue().length)
+    }
+    
+    public function testDequeueShortensTheStack():void {
+      _wrapper.queue(function():void {})
+      _wrapper.dequeue()
+      assertEquals(0, _wrapper.queue().length)
+    }
+    
+    public function testDequeueExecutesTheNextFunction():void {
+      _wrapper.queue(function():void { _object.x = 10 })
+      _wrapper.dequeue()
+      assertEquals(10, _object.x)
+    }
+    
+    public function testQueueIsChainable():void {
+      _wrapper.queue(function():void {
+        _object.x = 10
+        _wrapper.dequeue()
+      }).queue(function():void {
+        _object.y = 10
+      })
+      
+      _wrapper.dequeue() // Still have to kick off the chain
+      
+      assertEquals(10, _object.x)
+      assertEquals(10, _object.y)
+      assertEquals(0, _wrapper.queue().length)
+    }
+    
+    public function testClearingTheQueue():void {
+      _wrapper.queue(function():void {}).queue(function():void {})
+      assertEquals(2, _wrapper.queue().length)
+      _wrapper.clearQueue()
+      assertEquals(0, _wrapper.queue().length)
     }
   }
 }
