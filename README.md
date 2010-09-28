@@ -19,27 +19,6 @@ the next version include:
   * Implement functional programming callbacks
   * Some actual testing
 
-## Getting Started
-
-Sfx uses a singleton Tween object to sync all tweening to the Stage framerate.
-This has many benefits for performance, but does require you to register the 
-stage in your main display class.
-
-Here is a sample implementation:
-
-    package {
-      import flash.display.Sprite
-      import sfx.Tween
-      import sfx.SFX
-  
-      public class MyClass extends DisplayObject {
-        public function MyClass() {
-          // Register the tween singleton
-          Tween.getInstance().registerStage(this.stage)
-        }
-      }
-    }
-
 ## Usage
 
 Returns a a SFX object that wraps the original object
@@ -90,3 +69,7 @@ they will be called in sequence:
       .animate({ scaleX: 0.25, scaleY: 0.25 }, 100)
       .animate({ x: '-=200', scaleX: 0.25, scaleY: 0.25 }, 200)
       .fade('out', 250);
+
+It is also possible to incorporate a delay between any two items in the queue:
+
+    $sprite.hide().delay(500).fade('in', 250)

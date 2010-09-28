@@ -1,5 +1,7 @@
 package sfx {
   
+  import flash.utils.setTimeout
+  
   public class SFX {
     
     public const RFXNUM:RegExp = /^([+\-]=)?([\d+.\-]+)$/
@@ -58,15 +60,30 @@ package sfx {
     /**
     * Execute the next function on the queue for the matched elements.
     **/
-    public function dequeue():void {
+    public function dequeue():SFX {
       if (_queue.length > 0) _queue.shift()()
+      
+      return this
     }
     
     /**
     * Remove from the queue all items that have not yet been run
     **/
-    public function clearQueue():void {
+    public function clearQueue():SFX {
       _queue.splice(0, _queue.length)
+      
+      return this
+    }
+    
+    /**
+    * Set a timer to delay execution of subsequent items in the queue
+    **/
+    public function delay(duration:uint):SFX {
+      if (duration > 0) {
+        this.queue(function():void { setTimeout(dequeue, duration) })
+      }
+      
+      return this
     }
     
     // PROTECTED ---------------------------------------------------------------

@@ -1,5 +1,6 @@
 package {
   import asunit.framework.TestCase
+  import flash.utils.setTimeout
   import sfx.SFX
   
   public class SFXTest extends TestCase {
@@ -65,11 +66,38 @@ package {
       assertEquals(0, _wrapper.queue().length)
     }
     
+    public function testDequeueIsChainable():void {
+      _wrapper.queue(function():void {}).queue(function():void {})
+      
+      _wrapper.dequeue().dequeue()
+      
+      assertEquals(0, _wrapper.queue().length)
+    }
+    
     public function testClearingTheQueue():void {
       _wrapper.queue(function():void {}).queue(function():void {})
       assertEquals(2, _wrapper.queue().length)
       _wrapper.clearQueue()
       assertEquals(0, _wrapper.queue().length)
+    }
+    
+    public function testDelayAddsToTheQueue():void {
+      _wrapper.delay(10)
+      assertEquals(1, _wrapper.queue().length)
+    }
+    
+    public function testDelayingTheQueue():void {
+      _wrapper.delay(10).queue(function():void { _object.x = 10 })
+      _wrapper.dequeue()
+      
+      assertEquals(0, _object.x) // No change for 10ms
+    }
+    
+    public function testDelayOfZeroIsIgnored():void {
+      _wrapper.delay(0).queue(function():void { _object.x = 10 })
+      _wrapper.dequeue()
+      
+      assertEquals(10, _object.x)
     }
   }
 }
