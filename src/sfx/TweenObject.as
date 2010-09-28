@@ -7,62 +7,68 @@ package sfx {
   public class TweenObject {
     
     public var target:Object
-    public var property:String
+    public var properties:Object
+    public var frames:uint
     public var easing:Function
-    public var begin:Number
-    public var finish:Number
-    public var total_frames:uint
-    public var yoyo_count:uint
-    public var frame:uint      = 0
-    public var paused:Boolean  = false
-    public var yoyoing:Boolean = false
+    public var callbacks:Array
+    public var frame:int      = 0
+    public var paused:Boolean = false
     
-    public function TweenObject(target:Object, property:String, easing:Function,
-                                begin:Number, finish:Number, total_frames:uint,
-                                yoyo_count:uint) {
-      this.target       = target
-      this.property     = property
-      this.easing       = easing
-      this.begin        = begin
-      this.finish       = finish
-      this.total_frames = total_frames
-      this.yoyo_count   = yoyo_count
+    public function TweenObject(target:Object, properties:Object, frames:uint,
+                                easing:String = null, callbacks:Array = null) {
+      this.target     = target
+      this.properties = properties
+      this.frames     = frames
+      this.easing     = Easing.resolveEasing(easing)
+      this.callbacks  = callbacks || []
+      
+      establishBeginingProperties()
     }
     
     /**
     * Updates the target object
     **/
     public function render():void {
-      this.frame = (this.yoyoing) ? this.frame - 1 : this.frame + 1
-
-      var change:Number = this.finish - this.begin,
-          calc:Number   = this.easing.call(null, this.frame, this.begin, change, this.total_frames)
-
-      this.target[this.property] = calc
+      this.frame += 1
+      
+      var begin:Number, finish:Number, change:Number, calc:Number
+      
+      for (var prop:String in this.properties) {
+        if (/^_.+$/.test(prop)) continue
+        begin  = this.properties['_' + prop]
+        finish = this.properties[prop]
+        change = finish - begin
+        calc   = this.easing.call(null, this.frame, begin, change, this.frames)
+        
+        this.target[prop] = calc
+      }
+      
+      if (this.frame == this.frames) {
+        while (callbacks.length > 0) { callbacks.shift()() }
+      }
     }
     
     /**
     * Dual purpose, fast-forward or rewind.
     **/
-    public function jump(forward:Boolean):void {      
+    public function jump(forward:Boolean):void {
       if (forward) {
-        this.target[this.property] = this.finish
-        this.frame = this.total_frames
+        this.frame = this.frames - 1
       } else {
-        this.target[this.property] = this.begin
-        this.frame = 0
+        this.frame = -1
       }
       
       this.render()
     }
     
-    /**
-    * Instructs the tweened animation to play in reverse from its last direction
-    * of tweened property increments.
-    **/
-    public function yoyo():void {
-      this.yoyoing     = (this.yoyoing) ? false : true
-      this.yoyo_count -= 1
+    // Private -----------------------------------------------------------------
+    
+    private function establishBeginingProperties():void {
+      for (var prop:String in this.properties) {
+        if (/^_.+$/.test(prop)) continue
+        
+        this.properties['_' + prop] = this.target[prop]
+      }
     }
   }
 }

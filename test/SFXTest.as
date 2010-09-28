@@ -29,6 +29,8 @@ package {
       assertSame(_object, _wrapper.object)
     }
     
+    // Queue -------------------------------------------------------------------
+    
     public function testWrappedQueueInitializesEmpty():void {
       assertEquals(0, _wrapper.queue().length)
     }
@@ -81,6 +83,8 @@ package {
       assertEquals(0, _wrapper.queue().length)
     }
     
+    // Delay -------------------------------------------------------------------
+    
     public function testDelayAddsToTheQueue():void {
       _wrapper.delay(10)
       assertEquals(1, _wrapper.queue().length)
@@ -98,6 +102,26 @@ package {
       _wrapper.dequeue()
       
       assertEquals(10, _object.x)
+    }
+    
+    // Animate -----------------------------------------------------------------
+    
+    public function testAnimatingAProperty():void {
+      _wrapper.animate({ x: 10 })
+      assertEquals(10, _object.x)
+    }
+    
+    public function testAnimatingMultipleProperties():void {
+      _wrapper.animate({ x: 10, y: 10 })
+      assertEquals(10, _object.x)
+      assertEquals(10, _object.y)
+    }
+    
+    public function testAnimateAcceptsRelativeProperties():void {
+      _wrapper.animate({ x: '-=10' })
+      assertEquals(-10, _object.x)
+      _wrapper.animate({ x: '+=10' })
+      assertEquals(0, _object.x)
     }
   }
 }

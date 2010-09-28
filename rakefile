@@ -40,19 +40,19 @@ namespace :performance do
   desc 'Compile and run the particles performance example'
   task :particles do
     cmd  = []
-    cmd << "mxmlc -compiler.source-path=example,src"
+    cmd << "mxmlc -compiler.source-path=example,src -debug=true"
     cmd << "-static-link-runtime-shared-libraries=true"
     cmd << "-compiler.include-libraries=lib/swfprofiler.swc"
     cmd << "example/Particles.as"
   
     sh cmd.join(' ')
-    sh %{ open example/Particles.swf }
+    sh %{ fdb example/Particles.swf }
   end
   
   desc 'Compile and run the easing performance example'
   task :easing do
     cmd  = []
-    cmd << "mxmlc -compiler.source-path=example,src"
+    cmd << "mxmlc -compiler.source-path=example,src -debug=true"
     cmd << "-static-link-runtime-shared-libraries=true"
     cmd << "-compiler.include-libraries=lib/swfprofiler.swc"
     cmd << "example/EasingPerformance.as"

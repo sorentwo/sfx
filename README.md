@@ -1,10 +1,10 @@
-                                    ___          
-                                  /'___\         
-                             ____/\ \__/  __  _  
-                            /',__\ \ ,__\/\ \/'\ 
-                           /\__, `\ \ \_/\/>  </ 
-                           \/\____/\ \_\  /\_/\_\
-                            \/___/  \/_/  \//\/_/
+          ___          
+        /'___\         
+   ____/\ \__/  __  _  
+  /',__\ \ ,__\/\ \/'\ 
+ /\__, `\ \ \_/\/>  </ 
+ \/\____/\ \_\  /\_/\_\
+  \/___/  \/_/  \//\/_/
 
 An AS3 animation library with pre-defined effects, queues and tweening. It 
 is optimized for speed and handles anti-garbage collection automatically.
@@ -23,7 +23,7 @@ the next version include:
 
 Returns a a SFX object that wraps the original object
 
-    var $sprite = Sfx.wrap(new DisplayObject())
+    var $sprite = SFX.wrap(new DisplayObject())
 
 You can always retrieve your original object, if needed
 

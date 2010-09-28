@@ -34,65 +34,27 @@ package sfx {
     /**
     * Add a new tween animation to be tracked.
     * 
-    * @param  target    The object that will be affected
-    * @param  property  Which property will be affected on the object, i.e. 'x'
-    * @param  easing    A string representation of an easing function
-    * @param  begin     The value at which tweening will start
-    * @param  finish    The value at which tweening will finish
+    * @param  target    The object that will be changed
+    * @param  property  Properties that will be changed
     * @param  duration  The animation duration in milliseconds
+    * @param  easing    A string representation of an easing function
+    * @param  callback  A function that will be executed at completion
     **/
-    public function add(target:Object, property:String, easing:String,
-                        begin:Number, finish:Number, duration:uint,
-                        yoyo_count:uint = 0):void {
+    public function add(target:Object, properties:Object, duration:uint,
+                        easing:String = null, callbacks:Array = null):TweenObject {
       
       if (!_ticking) {
         _timer.addEventListener(TimerEvent.TIMER, tick)
+        _timer.start()
         _ticking = true
       }
       
       var frames:uint       = uint((duration / 1000) * 30),
-          easef:Function    = Easing.resolveEasing(easing),
-          tween:TweenObject = new TweenObject(target, property, easef, begin, finish, frames, yoyo_count)
-
+          tween:TweenObject = new TweenObject(target, properties, frames, easing, callbacks)
+      
       _list.push(tween)
-    }
-    
-    /**
-    * Fast-forward the tween to its final value.
-    * 
-    * @param  target    The object that will be effected
-    * @param  property  The property that will be effected
-    **/
-    public function ff(target:Object, property:String):void {
-      jump(target, property, true)
-    }
-    
-    /**
-    * Rewind the tween to its initial value.
-    * 
-    * @param  target    The object that will be effected
-    * @param  property  The property that will be effected
-    **/
-    public function rw(target:Object, property:String):void {
-      jump(target, property, false)
-    }
-    
-    /**
-    * Pause all tweens or only tweens relating to one target object.
-    * 
-    * @param  target  If given only the tweens effecting that target will be paused
-    **/
-    public function pause(target:Object = null):void {
-      togglePause(target, true)
-    }
-    
-    /**
-    * Unpause all tweens or only tweens relating to one target object.
-    * 
-    * @param  target  If given only the tweens effecting that target will be unpaused
-    **/
-    public function unpause(target:Object = null):void {
-      togglePause(target, false)
+      
+      return tween
     }
     
     /**
@@ -101,17 +63,18 @@ package sfx {
     * 
     * @param  target    If given only the tween, or tweens, effecting that target
     *                   will be stopped.
-    * @param  property  If given only the tween matching the target and property
-    *                   will be stopped.
     **/
-    public function stop(target:Object = null, property:String = null):void {
+    public function stop(target:Object = null):void {
       var stopping:Vector.<TweenObject> = new Vector.<TweenObject>()
-      
-      if      (target &&  property) { stopping.push(findByTargetAndProperty(target, property))    }
-      else if (target && !property) { stopping = findAllByTarget(target)                            }
-      else                          { stopping = _list }
-
+      stopping = (target != null) ? findAllByTarget(target) : _list
       while (stopping.length > 0) { remove(stopping.shift()) }
+    }
+    
+    /**
+    * Remove the supplied objet from the rendering list
+    **/
+    public function remove(tween:TweenObject):void {
+      _list.splice(_list.indexOf(tween), 1)
     }
     
     // PRIVATE -----------------------------------------------------------------
@@ -122,43 +85,16 @@ package sfx {
     private function tick(event:TimerEvent):void {
       if (_list.length < 1) return
             
-            var length:int = _list.length - 1
-            for (var i:int = 0; i < length; i++) {
-              var to:TweenObject = _list[i]
-              
-              if (!to.paused) to.render()
-              
-              if ((!to.yoyoing && to.frame == to.total_frames) || (to.yoyoing && to.frame == 0)) {
-                if (to.yoyo_count > 0) {
-                  to.yoyo()
-                } else {
-                  remove(to)
-                }
-              }
-            }
-    }
-    
-    /**
-    * Dual purpose, fast-forward or rewind.
-    **/
-    private function jump(target:Object, property:String, forward:Boolean):void {
-      findByTargetAndProperty(target, property).jump(forward)
-    }
-    
-    /**
-    * Dual purpose, pause or unpause.
-    **/
-    private function togglePause(target:Object = null, toggle:Boolean = true):void {
-      var pausing:Vector.<TweenObject> = (target) ? findAllByTarget(target) : _list
-      
-      while (pausing.length > 0) { pausing.shift().paused = toggle }
-    }
-    
-    /**
-    * Remove an object from the list.
-    **/
-    private function remove(item:TweenObject):void {
-      _list.splice(_list.indexOf(item), 1)
+      var length:int = _list.length - 1,
+          to:TweenObject
+          
+      for (var i:int = 0; i < length; i++) {
+        to = _list[i]
+        
+        to.render()
+        
+        if (to.frame == to.frames) remove(to)
+      }
     }
     
     /**
@@ -170,19 +106,6 @@ package sfx {
       }
       
       return _list.filter(filter)
-    }
-    
-    /**
-    * Given the target and the property find a particular tween object.
-    **/
-    private function findByTargetAndProperty(target:Object, property:String):TweenObject {      
-      var length:int = _list.length
-      for (var i:int = 0; i < length; i++) {
-        var to:TweenObject = _list[i]
-        if (to.target == target && to.property == property) return to
-      }
-      
-      return null
     }
   }
 }

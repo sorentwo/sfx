@@ -27,7 +27,8 @@ package sfx {
     public function get object():* { return _object }
     
     /**
-    * Animate the wrapped object's properties.
+    * Animate the wrapped object's properties. Animations are automatically
+    * dequeued on completion.
     * 
     * @param properties
     * @param duration
@@ -38,15 +39,21 @@ package sfx {
     **/
     public function animate(properties:Object, duration:uint = 0, easing:String = null, callback:Function = null):SFX {
       
-      _queue.push(new QueueObject(properties, duration, easing, callback))
+      var callbacks:Array = (callback is Function) ? [callback, dequeue] : [dequeue]
       
-      /*processQueue()*/
+      _queue.push(function():void {
+        _tween.add(_object, properties, duration, easing, callbacks)
+      })
+      
+      dequeue() // Automatically start animating. Not sure about this.
       
       return this
     }
         
     /**
-    * Show the queue of animations to be executed on the wrapped object
+    * Show the queue of animations to be executed on the wrapped object.
+    * 
+    * @param callback   A function that will be executed when the queue processes
     **/
     public function queue(callback:Function = null):* {
       if (callback != null) {
@@ -85,7 +92,5 @@ package sfx {
       
       return this
     }
-    
-    // PROTECTED ---------------------------------------------------------------
   }
 }

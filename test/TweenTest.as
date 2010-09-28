@@ -1,7 +1,7 @@
 package {
   import asunit.framework.TestCase
-  import sfx.Easing
   import sfx.Tween
+  import sfx.TweenObject
   
   public class TweenTest extends TestCase {
     
@@ -22,9 +22,12 @@ package {
       _tween.stop()
     }
     
-    public function testThisIsABlackBoxAndReallyHardToTest():void {
-      _tween.add(_object, 'x', 'linearIn', 0, 10, 1)
-      assertEquals(10, _object.x)
+    // Without async testing this barely tests anything
+    public function testAddAndRemove():void {
+      var to:TweenObject = _tween.add(_object, 'x', 'linearIn', 0, 1, 1)
+      _tween.remove(to)
+      
+      assertEquals(0, _object.x)
     }
   }
 }
