@@ -93,7 +93,7 @@ package sfx {
         
         to.render()
         
-        if (to.frame == to.frames) remove(to)
+        if (to.frame == to.frames) _list.splice(i, 1)
       }
     }
     
