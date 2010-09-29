@@ -11,13 +11,12 @@ is optimized for speed and handles anti-garbage collection automatically.
 
 ## In Progress
 
-The current version has a rather generic syntax and is entirely OO, goals for
-the next version include:
+As of versions > 0.6.1 the basic goals for SFX have been reached:
 
-  * Mirror the jQuery animate() API
-  * Add support for infinite chaining
-  * Implement functional programming callbacks
-  * Some actual testing
+  * Mirrors the jQuery animate() API
+  * Supports infinite chaining
+  * Implements functional programming callbacks
+  * Unlike most AS3 code is backed by actual testing
 
 ## Why?
 
@@ -45,7 +44,7 @@ Perform animation of any numeric property on your object:
 
 Importing specific easing classes is cumbersome. Just provide easing as a string:
   
-  $sprite.animate({ x: 10 }, 100, 'quadIn');
+    $sprite.animate({ x: 10 }, 100, 'quadIn');
 
 SFX eschews onFrame, onPlay type events. Event dispatching slows things down, so 
 we only handle a complete event provided as a callback function:
