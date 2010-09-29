@@ -48,10 +48,8 @@ package sfx {
         _ticking = true
       }
       
-      var frames:uint       = uint((duration / 1000) * 60),
+      var frames:uint = uint((duration / 1000) * 60),
           tween:TweenObject = new TweenObject(target, properties, frames, easing, callbacks)
-      
-      tween.loop = true
       
       _list.push(tween)
       

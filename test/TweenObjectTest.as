@@ -26,7 +26,8 @@ package {
       
       assertEquals('x', _tween.properties[0][0]) // Property
       assertEquals(0,   _tween.properties[0][1]) // Begin
-      assertEquals(10,  _tween.properties[0][2]) // Change
+      assertEquals(10,  _tween.properties[0][2]) // Finish
+      assertEquals(10,  _tween.properties[0][3]) // Change
     }
     
     public function testRenderIncrementsFrame():void {
@@ -70,6 +71,13 @@ package {
       
       assertEquals(0, _tween.frame)
       assertEquals(0, _object.x)
+    }
+    
+    public function testObjectWithDurationZero():void {
+      _tween = new TweenObject(_object, { x: 10 }, 0, 'linearIn')
+      _tween.render()
+      
+      assertEquals(10, _object.x)
     }
   }
 }

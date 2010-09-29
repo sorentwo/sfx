@@ -37,10 +37,14 @@ package sfx {
       for (var i:int = 0; i < this.properties.length; i++) {
         propset = this.properties[i]
         
-        this.target[propset[0]] = this.easing.call(null, this.frame, propset[1], propset[2], this.frames)
+        if (this.frames == 0) {
+          this.target[propset[0]] = propset[2]
+        } else {
+          this.target[propset[0]] = this.easing.call(null, this.frame, propset[1], propset[3], this.frames)
+        }
       }
       
-      if (this.frame == this.frames) {
+      if (this.frames == 0 || this.frame == this.frames) {
         if (this.loop) {
           this.jump(false)
         } else {
@@ -71,7 +75,7 @@ package sfx {
         finish = properties[prop]
         change = finish - begin
         
-        this.properties.push([prop, begin, change])
+        this.properties.push([prop, begin, finish, change])
       }
     }
   }
