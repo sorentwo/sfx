@@ -59,5 +59,14 @@ package {
       assertEquals(0, _tween.frame)
       assertEquals(0, _object.x)
     }
+    
+    public function testLoopsOnCompletion():void {
+      _tween = new TweenObject(_object, { x: 10 }, 1, 'linearIn')
+      _tween.loop  = true
+      _tween.render()
+      
+      assertEquals(0, _tween.frame)
+      assertEquals(0, _object.x)
+    }
   }
 }

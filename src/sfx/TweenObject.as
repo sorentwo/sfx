@@ -12,10 +12,11 @@ package sfx {
     public var easing:Function
     public var callbacks:Array
     public var frame:int      = 0
+    public var loop:Boolean   = false
     public var paused:Boolean = false
     
     public function TweenObject(target:Object, properties:Object, frames:uint,
-                                easing:String = null, callbacks:Array = null) {
+                                easing:String, callbacks:Array = null) {
       this.target     = target
       this.properties = properties
       this.frames     = frames
@@ -44,7 +45,11 @@ package sfx {
       }
       
       if (this.frame == this.frames) {
-        while (callbacks.length > 0) { callbacks.shift()() }
+        if (this.loop) {
+          this.jump(false)
+        } else {
+          while (callbacks.length > 0) { callbacks.shift()() }
+        }
       }
     }
     
