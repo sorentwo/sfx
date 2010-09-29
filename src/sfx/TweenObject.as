@@ -33,17 +33,11 @@ package sfx {
     public function render():void {
       this.frame += 1
       
-      var property:String, begin:Number, change:Number, calc:Number,
-          propset:Array
-      
+      var propset:Array
       for (var i:int = 0; i < this.properties.length; i++) {
-        propset  = this.properties[i]
-        property = propset[0]
-        begin    = propset[1]
-        change   = propset[2]
-        calc     = this.easing.call(null, this.frame, begin, change, this.frames)
+        propset = this.properties[i]
         
-        this.target[property] = calc
+        this.target[propset[0]] = this.easing.call(null, this.frame, propset[1], propset[2], this.frames)
       }
       
       if (this.frame == this.frames) {
