@@ -52,6 +52,8 @@ package sfx {
       var frames:uint       = uint((duration / 1000) * 30),
           tween:TweenObject = new TweenObject(target, properties, frames, easing, callbacks)
       
+      tween.loop = true
+      
       _list.push(tween)
       
       return tween
@@ -85,10 +87,8 @@ package sfx {
     private function tick(event:TimerEvent):void {
       if (_list.length < 1) return
             
-      var length:int = _list.length - 1,
-          to:TweenObject
-          
-      for (var i:int = 0; i < length; i++) {
+      var to:TweenObject
+      for (var i:int = 0; i < _list.length; i++) {
         to = _list[i]
         
         to.render()
