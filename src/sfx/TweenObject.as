@@ -6,6 +6,8 @@ package sfx {
 
   public class TweenObject {
     
+    public const RFXNUM:RegExp = /^([+\-]=)?([\d+.\-]+)$/
+    
     public var target:Object
     public var properties:Vector.<Array>
     public var frames:uint
@@ -69,10 +71,21 @@ package sfx {
     // Private -----------------------------------------------------------------
     
     private function establishBeginningProperties(properties:Object):void {
-      var begin:Number, finish:Number, change:Number
+      var value:String, parts:Object, begin:Number, finish:Number, target:Number, change:Number
+      
       for (var prop:String in properties) {
-        begin  = this.target[prop]
-        finish = properties[prop]
+        value  = properties[prop]
+        parts  = RFXNUM.exec(value)
+        begin  = Number(this.target[prop])
+        
+        // If a +=/-= token was provided we're doing a relative animation
+        if (parts[1]) {
+          target = Number(parts[2])
+          finish = (parts[1] == "-=") ? begin - target : begin + target
+        } else {
+          finish = Number(value)
+        }
+        
         change = finish - begin
         
         this.properties.push([prop, begin, finish, change])

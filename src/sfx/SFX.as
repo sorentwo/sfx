@@ -4,8 +4,6 @@ package sfx {
   
   public class SFX {
     
-    public const RFXNUM:RegExp = /^([+\-]=)?([\d+.\-]+)$/
-    
     private var _object:*    = null
     private var _queue:Array = []
     private var _tween:Tween = Tween.getInstance()
