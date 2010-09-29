@@ -19,6 +19,15 @@ the next version include:
   * Implement functional programming callbacks
   * Some actual testing
 
+## Why?
+
+Because animation is supposed to be fun, and using something as dry as BetweenAS3,
+Tweensy, TweenMax, or GTween doesn't give you the warm fuzzy feeling that you
+deserve!
+
+The goal here isn't to have the most feature packed tween engine, it is to have
+the most fun to use animation engine that is blazing fast and light-weight.
+
 ## Usage
 
 Returns a a SFX object that wraps the original object
