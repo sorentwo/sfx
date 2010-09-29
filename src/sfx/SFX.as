@@ -35,6 +35,8 @@ package sfx {
     * @param easing
     * @param callback
     * 
+    * @return SFX
+    * 
     * @example There will be examples here
     **/
     public function animate(properties:Object, duration:uint = 0, easing:String = null, callback:Function = null):SFX {
@@ -42,10 +44,58 @@ package sfx {
       var callbacks:Array = (callback is Function) ? [callback, this.dequeue] : [this.dequeue]
       
       _queue.push(function():void {
-        _tween.add(_object, properties, duration, easing, callbacks)
+        var tween:* = _tween.add(_object, properties, duration, easing, callbacks)
+        if (duration == 0) tween.render()
       })
       
-      dequeue() // Automatically start animating. Not sure about this.
+      dequeue()
+      
+      return this
+    }
+    
+    /**
+    * Hide the wrapped object. Optionally define a duration to animate hiding.
+    * 
+    * @param duration
+    * @param easing
+    * @param callback
+    * 
+    * @return SFX
+    **/
+    public function hide(duration:uint = 0, callback:Function = null):SFX {
+      animate({ alpha: 0 }, duration, null, function():void {
+        _object.visible = false
+        if (callback is Function) callback()
+      })
+      
+      return this
+    }
+    
+    /**
+    * Show the wrapped object. Optionally define a duration to animate showing.
+    * Alpha and visiblity are changed regardless of duration.
+    * 
+    * @param duration
+    * @param easing
+    * @param callback
+    * 
+    * @return SFX
+    **/
+    public function show(duration:uint = 0, callback:Function = null):SFX {
+      animate({ alpha: 1 }, duration, null, function():void {
+        _object.visible = true
+        if (callback is Function) callback()
+      })
+      
+      return this
+    }
+    
+    /**
+    **/
+    public function fade(to:*, duration:uint = 0, callback:Function = null):SFX {
+      var val:Number = (to is String) ? (to == 'in') ? 1 : 0 : to
+      
+      animate({ alpha: val }, duration, null, callback)
       
       return this
     }
@@ -66,6 +116,8 @@ package sfx {
     
     /**
     * Execute the next function on the queue for the matched elements.
+    * 
+    * @return SFX
     **/
     public function dequeue():SFX {
       if (_queue.length > 0) _queue.shift()()
@@ -75,6 +127,8 @@ package sfx {
     
     /**
     * Remove from the queue all items that have not yet been run
+    *
+    * @return SFX
     **/
     public function clearQueue():SFX {
       _queue.splice(0, _queue.length)
@@ -84,6 +138,8 @@ package sfx {
     
     /**
     * Set a timer to delay execution of subsequent items in the queue
+    * 
+    * @return SFX
     **/
     public function delay(duration:uint):SFX {
       if (duration > 0) {

@@ -10,7 +10,6 @@ package sfx {
   public class Effect {
     
     public static const DEFAULT_DURATION:uint = 400
-    public static const DEFAULT_EASING:String = 'linearIn'
 
     private var _tween:Tween = Tween.getInstance()
 
@@ -18,50 +17,6 @@ package sfx {
     * Create an instance of the Effect class.
     **/
     public function Effect() { }
-
-    /**
-    * Perform a timed fade on one or more objects.
-    *
-    * @param  value    Either strings 'in' or 'out', or a numeric value from 0-1
-    * @param  duration The effect duration in milliseconds, optional
-    * @param  easing   An easing algorithm, optional
-    * @pram   callback A function to execute when the animation is complete, optional
-    *
-    * @example Several fade examples given the object $sprite:
-    *
-    * <listing version="3.0">
-    * $sprite.fade('out')
-    * $sprite.fade('in', 500)
-    * $sprite.fade(0.5, 250, 'quadOut')
-    * $sprite.fade(1, 250, 'quadIn', function() { trace('Finished') })
-    * </listing>
-    **/
-    public function fade(value:*, duration:uint, easing:String, callback:Function):void {
-      /*options = mergeOptions(options)
-
-      for each (var object:DisplayObject in targets) {
-        if (!object.visible) object.visible = true
-        _tween.add(object, 'alpha', options['easing'], options['fade_from'], options['fade_to'], options['duration'])
-      }*/
-    }
-    
-    /**
-    * Immediately make one or more objects invisible. It should be noted that
-    * invisible and an alpha of 0 are not the same thing - if a hidden object has
-    * its alpha set it will have no effect. To see a hidden object it must be
-    * shown.
-    * 
-    * @example Hiding a display object:
-    * 
-    * <listing version="3.0">
-    * $sprite.hide()
-    * </listing>
-    * 
-    * @see show
-    **/
-    public function hide():void {
-      for each (var object:DisplayObject in targets) { object.visible = false }
-    }
     
     /**
     * Change the registration point of an object to any of its corners or the
@@ -115,25 +70,6 @@ package sfx {
         object.x += reg_x
         object.y += reg_y
       }
-    }
-    
-    /**
-    * Immediately make one or more objects visible. It should be noted that
-    * invisible and an alpha of 0 are not the same thing - if a hidden object has
-    * its alpha set it will have no effect. To see a hidden object it must be
-    * shown.
-    * 
-    * @example  Showing a display object:
-    * 
-    * <listing version="3.0">
-    * $sprite.show()
-    * </listing>
-    * 
-    * @see hide
-    * @see opacity
-    **/
-    public function show():void {
-      for each (var object:DisplayObject in targets) { object.visible = true }
     }
   }
 }

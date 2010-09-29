@@ -59,10 +59,15 @@ You can also call pre-defined effects:
     $sprite.fade('out', 250); // Using a keyword
     $sprite.fade(0.5, 250);   // Using a numeric value
     
-    // Instant effects, they don't take a duration
     $sprite.hide();
+    $sprite.hide(500);
+    $sprite.hide(500, function():void { trace("I'm a callback!") })
+    
+    // If you want special easing just use the animate method instead
     $sprite.show();
-    $sprite.move({ x: 5, y: 5});
+    $sprite
+      .hide(250, function():void { trace("I'm faded out") })
+      .show(250, function():void { trace("Now I'm faded back in") })
     
     // Change object registration. Very useful for rotation.
     $sprite.register('center');
