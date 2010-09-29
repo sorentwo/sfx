@@ -17,20 +17,18 @@ package {
 	import sfx.SFX
 	import sfx.Tween
 	
-	[SWF(width = 800, height = 600, frameRate = 30, backgroundColor = 0x000000)]
+	[SWF(width = 800, height = 600, frameRate = 60, backgroundColor = 0x000000)]
 	
 	public class Particles extends Sprite {
 	  
-		private static const NUM_PARTICLES:uint = 2000
-		private static const FADE:ColorTransform = new ColorTransform(1, 1, 1, 1, -32, -16, -16)
+		private static const NUM_PARTICLES:uint = 10000
+    private static const FADE:ColorTransform = new ColorTransform(1, 1, 1, 1, -16, -32, -24)
 		
 		private var _bitmapData:BitmapData
 		private var _bitmap:Bitmap
 		private var _particles:Particle
 		
-		public function Particles() {
-		  Tween.getInstance().registerStage(this.stage)
-		  
+		public function Particles() {		  
 			setupParticles()
 			setupScreen()
 			setupStage()
@@ -51,15 +49,15 @@ package {
 			while (--i >= 0) {
 				
 				a  = Math.random() * Math.PI * 2
-				dx = Math.cos(a) * 550 + 400
-				dy = Math.sin(a) * 450 + 300
+				dx = Math.random() * 800
+				dy = 600
 				
 				p = new Particle()
-				p.p.x = 400
-				p.p.y = 300
+				p.p.x = dx
+				p.p.y = 0
 				
-        var dur:uint = uint(1 + Math.random() * 500)
-				SFX.wrap(p.p).animate({ x: dx, y: dy }, dur, 'quartIn')
+        var dur:uint = uint(1 + Math.random() * 1000)
+				SFX.wrap(p.p).animate({ x: dx, y: dy }, dur, 'linearIn')
 				
 				prev.next = p
 				prev = p
