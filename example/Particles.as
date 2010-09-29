@@ -56,8 +56,8 @@ package {
 				p.p.x = dx
 				p.p.y = 0
 				
-        var dur:uint = uint(1 + Math.random() * 1000)
-				SFX.wrap(p.p).animate({ x: dx, y: dy }, dur, 'linearIn')
+        var dur:uint = uint(1.5 + Math.random() * 4500)
+				SFX.wrap(p.p).animate({ x: dx, y: dy }, dur, 'cubicIn')
 				
 				prev.next = p
 				prev = p

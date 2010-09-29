@@ -6,13 +6,13 @@
 
 package sfx {
   
-  import flash.events.TimerEvent
-  import flash.utils.Timer
+  import flash.display.Shape
+  import flash.events.Event
   
   public class Tween {
     
     private static var _tween:Tween = new Tween()
-    private static var _timer:Timer = new Timer(33, 0)
+    private static var _shape:Shape = new Shape()
     private static var _list:Vector.<TweenObject> = new Vector.<TweenObject>()
     
     private static var _ticking:Boolean
@@ -44,12 +44,11 @@ package sfx {
                         easing:String = null, callbacks:Array = null):TweenObject {
       
       if (!_ticking) {
-        _timer.addEventListener(TimerEvent.TIMER, tick)
-        _timer.start()
+        _shape.addEventListener(Event.ENTER_FRAME, tick)
         _ticking = true
       }
       
-      var frames:uint       = uint((duration / 1000) * 30),
+      var frames:uint       = uint((duration / 1000) * 60),
           tween:TweenObject = new TweenObject(target, properties, frames, easing, callbacks)
       
       tween.loop = true
@@ -84,7 +83,7 @@ package sfx {
     /**
     * Checks the list and triggers rendering or removes completed tweens.
     **/
-    private function tick(event:TimerEvent):void {
+    private function tick(event:Event):void {
       if (_list.length < 1) return
             
       var to:TweenObject

@@ -20,10 +20,13 @@ package {
       _object = null
     }
     
+    // Turns { x: 10, y: 10 } -> <['x', 10, 0, 10], ['y', 10, 0, 10]>
     public function testObjectEstablishesBeginningProperties():void {
       _tween = new TweenObject(_object, { x: 10 }, 1, 'linearIn')
-      assertTrue(_tween.properties.hasOwnProperty('_x'))
-      assertFalse(_tween.properties.hasOwnProperty('_y'))
+      
+      assertEquals('x', _tween.properties[0][0]) // Property
+      assertEquals(0,   _tween.properties[0][1]) // Begin
+      assertEquals(10,  _tween.properties[0][2]) // Change
     }
     
     public function testRenderIncrementsFrame():void {
