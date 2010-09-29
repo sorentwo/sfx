@@ -6,7 +6,7 @@ require 'rubygems'
 
 OPT = {}
 OPT[:project]   = 'sfx'
-OPT[:version]   = '0.5.0'
+OPT[:version]   = '0.6.0'
 OPT[:src_dir]   = 'src'
 OPT[:bin_dir]   = 'bin'
 OPT[:lib_dir]   = 'lib'
