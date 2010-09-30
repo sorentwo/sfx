@@ -55,7 +55,6 @@ package sfx {
     * Hide the wrapped object. Optionally define a duration to animate hiding.
     * 
     * @param duration
-    * @param easing
     * @param callback
     * 
     * @return SFX
@@ -74,7 +73,6 @@ package sfx {
     * Alpha and visiblity are changed regardless of duration.
     * 
     * @param duration
-    * @param easing
     * @param callback
     * 
     * @return SFX
@@ -89,6 +87,13 @@ package sfx {
     }
     
     /**
+    * Adjust the opacity of the wrapped object. This does not alter visiblity.
+    * 
+    * @param to
+    * @param duration
+    * @param callback
+    * 
+    * @reutrn SFX
     **/
     public function fade(to:*, duration:uint = 0, callback:Function = null):SFX {
       var val:Number = (to is String) ? (to == 'in') ? 1 : 0 : to
