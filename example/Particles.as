@@ -21,7 +21,7 @@ package {
 	
 	public class Particles extends Sprite {
 	  
-		private static const NUM_PARTICLES:uint = 10000
+		private static const NUM_PARTICLES:uint = 20000
     private static const FADE:ColorTransform = new ColorTransform(1, 1, 1, 1, -16, -32, -24)
 		
 		private var _bitmapData:BitmapData
@@ -57,7 +57,7 @@ package {
 				p.p.y = 0
 				
         var dur:uint = uint(1.5 + Math.random() * 4500)
-				SFX.wrap(p.p).animate({ x: dx, y: dy }, dur, 'cubicIn')
+				SFX.wrap(p.p).animate({ x: dx, y: dy }, dur, { easing: 'cubicIn', loop: 0 })
 				
 				prev.next = p
 				prev = p
