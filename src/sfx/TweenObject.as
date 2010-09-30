@@ -36,7 +36,7 @@ package sfx {
     * Updates the target object
     **/
     public function render():void {
-      this.frame++
+      if (this.frames > 0) this.frame++
       
       var propset:Array
       for (var i:int = 0; i < this.properties.length; i++) {

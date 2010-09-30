@@ -37,6 +37,13 @@ package {
       assertEquals(1, _tween.frame)
     }
     
+    public function testRenderingADurationOfZeroDoesNotIncrementFrame():void {
+      _tween = new TweenObject(_object, { x: 10 }, 0, 'linearIn')
+      _tween.render()
+      
+      assertEquals(0, _tween.frame)
+    }
+    
     public function testRendersAllProperties():void {
       _tween = new TweenObject(_object, { x: 10, y: 10 }, 1, 'linearIn')
       _tween.render()
