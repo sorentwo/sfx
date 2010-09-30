@@ -38,15 +38,14 @@ package sfx {
     public function render():void {
       if (this.frames > 0) this.frame++
       
-      var propset:Array
+      var factor:Number = (frame < frames) ? this.easing.call(null, this.frame, 0.0, 1.0, this.frames) : 1.0,
+          invert:Number = 1.0 - factor,
+          propset:Array
+      
       for (var i:int = 0; i < this.properties.length; i++) {
         propset = this.properties[i]
         
-        if (this.frames == 0) {
-          this.target[propset[0]] = propset[2]
-        } else {
-          this.target[propset[0]] = this.easing.call(null, this.frame, propset[1], propset[3], this.frames)
-        }
+        this.target[propset[0]] = propset[1] * invert + propset[2] * factor
       }
       
       if (this.frames == 0 || this.frame == this.frames) {
@@ -88,9 +87,7 @@ package sfx {
           finish = Number(value)
         }
         
-        change = finish - begin
-        
-        this.properties.push([prop, begin, finish, change])
+        this.properties.push([prop, begin, finish])
       }
     }
   }

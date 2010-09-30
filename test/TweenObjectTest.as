@@ -27,7 +27,6 @@ package {
       assertEquals('x', _tween.properties[0][0]) // Property
       assertEquals(0,   _tween.properties[0][1]) // Begin
       assertEquals(10,  _tween.properties[0][2]) // Finish
-      assertEquals(10,  _tween.properties[0][3]) // Change
     }
     
     public function testRenderIncrementsFrame():void {
