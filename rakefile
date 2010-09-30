@@ -33,10 +33,10 @@ task :test do
 end
 
 ################################################################################
-# Performance Tasks
+# Example Tasks
 ################################################################################
 
-namespace :performance do
+namespace :examples do
   desc 'Compile and run the particles performance example'
   task :particles do
     cmd  = []
@@ -47,6 +47,16 @@ namespace :performance do
   
     sh cmd.join(' ')
     sh %{ fdb example/Particles.swf }
+  end
+  
+  desc 'Compile and run the queuing example'
+  task :queuing do
+    cmd  = []
+    cmd << "mxmlc -compiler.source-path=example,src -debug=true"
+    cmd << "example/Queuing.as"
+  
+    sh cmd.join(' ')
+    sh %{ fdb example/Queuing.swf }
   end
 end
 

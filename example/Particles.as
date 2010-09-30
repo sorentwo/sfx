@@ -1,7 +1,3 @@
-/**
-* The classic particle starfield performance example. 
-**/
-
 package {
 	import com.flashdynamix.utils.SWFProfiler
 	import flash.display.Bitmap
@@ -15,13 +11,12 @@ package {
 	import flash.geom.ColorTransform
 	import flash.geom.Point
 	import sfx.SFX
-	import sfx.Tween
 	
 	[SWF(width = 800, height = 600, frameRate = 60, backgroundColor = 0x000000)]
 	
 	public class Particles extends Sprite {
 	  
-		private static const NUM_PARTICLES:uint = 20000
+		private static const NUM_PARTICLES:uint = 5000
     private static const FADE:ColorTransform = new ColorTransform(1, 1, 1, 1, -16, -32, -24)
 		
 		private var _bitmapData:BitmapData
