@@ -30,19 +30,19 @@ package sfx {
     * 
     * @param properties
     * @param duration
-    * @param easing
+    * @param options
     * @param callback
     * 
     * @return SFX
     * 
     * @example There will be examples here
     **/
-    public function animate(properties:Object, duration:uint = 0, easing:String = null, callback:Function = null):SFX {
+    public function animate(properties:Object, duration:uint = 0, options:Object = null, callback:Function = null):SFX {
       
       var callbacks:Array = (callback is Function) ? [callback, this.dequeue] : [this.dequeue]
       
       _queue.push(function():void {
-        var tween:* = _tween.add(_object, properties, duration, easing, callbacks)
+        var tween:* = _tween.add(_object, properties, duration, options, callbacks)
         if (duration == 0) tween.render()
       })
       
@@ -93,7 +93,7 @@ package sfx {
     * @param duration
     * @param callback
     * 
-    * @reutrn SFX
+    * @reutrn SFXit
     **/
     public function fade(to:*, duration:uint = 0, callback:Function = null):SFX {
       var val:Number = (to is String) ? (to == 'in') ? 1 : 0 : to

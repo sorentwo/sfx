@@ -52,23 +52,18 @@ package {
       assertEquals(10, _object.y)
     }
     
+    // Explicit render removed to prevent stack overflow, this makes jump one
+    // frame less than the beginning or ending frame
     public function testJumpsForwardAndBackward():void {
       _tween = new TweenObject(_object, { x: 10 }, 2, 'linearIn')
       
       _tween.jump(true)
+      _tween.render()
       assertEquals(2, _tween.frame)
       assertEquals(10, _object.x)
       
       _tween.jump(false)
-      assertEquals(0, _tween.frame)
-      assertEquals(0, _object.x)
-    }
-    
-    public function testLoopsOnCompletion():void {
-      _tween = new TweenObject(_object, { x: 10 }, 1, 'linearIn')
-      _tween.loop  = true
       _tween.render()
-      
       assertEquals(0, _tween.frame)
       assertEquals(0, _object.x)
     }
@@ -78,6 +73,32 @@ package {
       _tween.render()
       
       assertEquals(10, _object.x)
+    }
+    
+    public function testLoopingSetToInfinite():void {
+      _tween = new TweenObject(_object, { x: 10 }, 2, 'linearIn')
+      _tween.loop = 0
+      
+      // Not quite infinite. 3 should work
+      for (var i:int = 0; i < 3; i++) {
+        _tween.frame = 1
+        _tween.render()
+        assertEquals(-1, _tween.frame)
+      }
+    }
+    
+    public function testLoopingSetToFinite():void {
+      _tween = new TweenObject(_object, { x: 10 }, 2, 'linearIn')
+      _tween.loop = 1
+      _tween.frame = 1
+      _tween.render()
+      
+      assertEquals(-1, _tween.frame)
+      
+      _tween.frame = 1
+      _tween.render()
+      
+      assertEquals(2, _tween.frame)
     }
   }
 }

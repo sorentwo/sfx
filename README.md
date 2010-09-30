@@ -42,14 +42,27 @@ Perform animation of any numeric property on your object:
     $sprite.animate({ x: 10 }, 250);     // Absolute
     $sprite.animate({ x: '-=10' }, 250); // Relative
 
-Importing specific easing classes is cumbersome. Just provide easing as a string:
+Because this is the flash world we need some un-weblike options, such as looping
+and yo-yoing:
+
+    $sprite.animate({ alpha: 0 }, 250, { yoyo: 2 }) // Yo-yo 2 times
+    $sprite.animate({ alpha: 0 }, 250, { yoyo: 0 }) // Yo-yo infinitely
+    
+    $sprite.animate({ alpha: 0 }, 250, { loop: 1 }) // Loop once
+    $sprite.animate({ alpha: 0 }, 250, { loop: 0 }) // Loop infinitely
+    
+    // If you set yoyo and loop for the same animation loop will override
+    $sprite.animate({ alpha: 0 }, 250, { loop: 0, yoyo: 2 })
+
+Importing specific easing classes is cumbersome. Just provide easing as a string
+inside the options hash:
   
-    $sprite.animate({ x: 10 }, 100, 'quadIn');
+    $sprite.animate({ x: 10 }, 100, { easing: 'quadIn' });
 
 SFX eschews onFrame, onPlay type events. Event dispatching slows things down, so 
 we only handle a complete event provided as a callback function:
 
-    $sprite.animate({ x: 10 }, 100, 'quadIn', function(this) {
+    $sprite.animate({ x: 10 }, 100, { easing: 'quadIn' }, function(this) {
       trace("Animation Complete");
     });
 
@@ -67,10 +80,6 @@ You can also call pre-defined effects:
     $sprite
       .hide(250, function():void { trace("I'm faded out") })
       .show(250, function():void { trace("Now I'm faded back in") })
-    
-    // Change object registration. Very useful for rotation.
-    $sprite.register('center');
-    $sprite.register('top-left');
 
 Creating a queue is especially easy to do, simply chain animations together and
 they will be called in sequence:

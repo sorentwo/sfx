@@ -7,6 +7,7 @@ package {
     
     private var _object:Object
     private var _tween:Tween
+    private var _to:TweenObject
     
     public function TweenTest(testMethod:String) {
       super(testMethod)
@@ -22,12 +23,15 @@ package {
       _tween.stop()
     }
     
-    // Without async testing this barely tests anything
-    public function testAddAndRemove():void {
-      var to:TweenObject = _tween.add(_object, 'x', 'linearIn', 0, 1, 1)
-      _tween.remove(to)
+    public function testSettingNoLoop():void {
+      _to = _tween.add(_object, { x: 20 }, 2, {})
       
-      assertEquals(0, _object.x)
+      assertEquals(-1, _to.loop)
+    }
+    
+    public function testSettingALoop():void {
+      _to = _tween.add(_object, { x: 20 }, 2, { loop: 0 })
+      assertEquals(0, _to.loop)
     }
   }
 }

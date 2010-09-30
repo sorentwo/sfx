@@ -13,9 +13,12 @@ package sfx {
     public var frames:uint
     public var easing:Function
     public var callbacks:Array
-    public var frame:int      = 0
-    public var loop:Boolean   = false
-    public var paused:Boolean = false
+    public var frame:int = 0
+    public var loop:int  = -1
+    public var yoyo:int  = -1
+    
+    private var loopCount:int = 0
+    private var yoyoCount:int = 0
     
     public function TweenObject(target:Object, properties:Object, frames:uint,
                                 easing:String, callbacks:Array = null) {
@@ -33,7 +36,7 @@ package sfx {
     * Updates the target object
     **/
     public function render():void {
-      this.frame += 1
+      this.frame++
       
       var propset:Array
       for (var i:int = 0; i < this.properties.length; i++) {
@@ -47,8 +50,9 @@ package sfx {
       }
       
       if (this.frames == 0 || this.frame == this.frames) {
-        if (this.loop) {
-          this.jump(false)
+        if (this.loop == 0 || this.loopCount < this.loop) {
+          jump(false)
+          this.loopCount++
         } else {
           while (callbacks.length > 0) { callbacks.shift()() }
         }
@@ -64,8 +68,6 @@ package sfx {
       } else {
         this.frame = -1
       }
-      
-      this.render()
     }
     
     // Private -----------------------------------------------------------------

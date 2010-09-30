@@ -41,15 +41,21 @@ package sfx {
     * @param  callback  A function that will be executed at completion
     **/
     public function add(target:Object, properties:Object, duration:uint,
-                        easing:String = null, callbacks:Array = null):TweenObject {
+                        options:Object = null, callbacks:Array = null):TweenObject {
       
       if (!_ticking) {
         _shape.addEventListener(Event.ENTER_FRAME, tick)
         _ticking = true
       }
       
-      var frames:uint = uint((duration / 1000) * 60),
+      options = options || {}
+      
+      var frames:uint   = uint((duration / 1000) * 60),
+          easing:String = options['easing'],
           tween:TweenObject = new TweenObject(target, properties, frames, easing, callbacks)
+      
+      tween.yoyo = (options['yoyo'] == undefined) ? -1 : options['yoyo']
+      tween.loop = (options['loop'] == undefined) ? -1 : options['loop']
       
       _list.push(tween)
       
