@@ -11,6 +11,8 @@ package sfx {
   
   public class Tween {
     
+    private static const BLOCKING:int = 8
+    
     private static var _tween:Tween = new Tween()
     private static var _shape:Shape = new Shape()
     private static var _list:Vector.<TweenObject> = new Vector.<TweenObject>()
@@ -90,12 +92,12 @@ package sfx {
     private function tick(event:Event):void {
       if (_list.length < 1) return
             
-      var to:TweenObject
-      for (var i:int = _list.length - 1; i; i += -1) {
+      var i:int = _list.length,
+          to:TweenObject
+      
+      while (i--) {
         to = _list[i]
-        
         to.render()
-        
         if (to.frame == to.frames) _list.splice(i, 1)
       }
     }

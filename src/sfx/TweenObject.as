@@ -43,9 +43,10 @@ package sfx {
       
       var factor:Number = (frame < frames) ? this.easing.call(null, this.frame, 0.0, 1.0, this.frames) : 1.0,
           invert:Number = 1.0 - factor,
+          i:int = this.properties.length,
           propset:Array
       
-      for (var i:int = this.properties.length - 1; i; i += -1) {
+      while (i--) {
         propset = this.properties[i]
         
         this.target[propset[0]] = propset[1] * invert + propset[2] * factor
