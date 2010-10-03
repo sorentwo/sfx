@@ -45,7 +45,7 @@ package sfx {
           invert:Number = 1.0 - factor,
           propset:Array
       
-      for (var i:int = 0; i < this.properties.length; ++i) {
+      for (var i:int = this.properties.length - 1; i; i += -1) {
         propset = this.properties[i]
         
         this.target[propset[0]] = propset[1] * invert + propset[2] * factor

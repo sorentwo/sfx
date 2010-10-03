@@ -91,7 +91,7 @@ package sfx {
       if (_list.length < 1) return
             
       var to:TweenObject
-      for (var i:int = 0; i < _list.length; i++) {
+      for (var i:int = _list.length - 1; i; i += -1) {
         to = _list[i]
         
         to.render()
