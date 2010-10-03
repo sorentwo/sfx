@@ -58,22 +58,6 @@ package {
       assertEquals(10, _object.y)
     }
     
-    // Explicit render removed to prevent stack overflow, this makes jump one
-    // frame less than the beginning or ending frame
-    public function testJumpsForwardAndBackward():void {
-      _tween = new TweenObject(_object, { x: 10 }, 2, 'linearIn')
-      
-      _tween.jump(true)
-      _tween.render()
-      assertEquals(2, _tween.frame)
-      assertEquals(10, _object.x)
-      
-      _tween.jump(false)
-      _tween.render()
-      assertEquals(0, _tween.frame)
-      assertEquals(0, _object.x)
-    }
-    
     public function testObjectWithDurationZero():void {
       _tween = new TweenObject(_object, { x: 10 }, 0, 'linearIn')
       _tween.render()
@@ -105,6 +89,16 @@ package {
       _tween.render()
       
       assertEquals(2, _tween.frame)
+    }
+    
+    public function testYoyoSetToInfinite():void {
+      _tween = new TweenObject(_object, { x: 10 }, 2, 'linearIn')
+      _tween.yoyo = 1
+      _tween.frame = 1
+      _tween.render()
+      _tween.render()
+      
+      assertEquals(1, _tween.frame)
     }
   }
 }
